@@ -1,6 +1,7 @@
 package throttled
 
 import (
+	"fmt"
 	"errors"
 	"math"
 	"net/http"
@@ -50,7 +51,9 @@ type HTTPRateLimiter struct {
 // Retry-After headers will be written to the response based on the
 // values in the RateLimitResult.
 func (t *HTTPRateLimiter) RateLimit(h http.Handler) http.Handler {
+	fmt.Printf("----------> before t: %+v\n", t)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Printf("----------> after t: %+v\n", t)
 		if t.RateLimiter == nil {
 			t.error(w, r, errors.New("You must set a RateLimiter on HTTPRateLimiter"))
 		}
